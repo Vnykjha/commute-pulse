@@ -117,7 +117,7 @@ export default function App() {
 
   // ── Layout ───────────────────────────────────────────────────────────────────
   return (
-    <div className="min-h-screen bg-gray-950 text-white" style={{ position: 'relative' }}>
+    <div className="min-h-screen text-white" style={{ position: 'relative' }}>
       {/* Animated dot field background */}
       <div style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none' }}>
         <DotField
