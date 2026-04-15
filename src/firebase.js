@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getAnalytics, logEvent } from 'firebase/analytics';
+import { getAnalytics, isSupported, logEvent } from 'firebase/analytics';
 import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
@@ -14,10 +14,15 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-export const db        = getFirestore(app);
-export const analytics = getAnalytics(app);
+export const db = getFirestore(app);
+
+// Analytics requires a browser environment — initialise lazily
+let analyticsInstance = null;
+isSupported().then((supported) => {
+  if (supported) analyticsInstance = getAnalytics(app);
+});
 
 /** Log a named analytics event with optional params. */
 export function track(eventName, params = {}) {
-  logEvent(analytics, eventName, params);
+  if (analyticsInstance) logEvent(analyticsInstance, eventName, params);
 }
