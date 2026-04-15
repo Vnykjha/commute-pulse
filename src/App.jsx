@@ -1,4 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { track } from './firebase.js';
+import { useFirestoreIncidents } from './hooks/useFirestoreIncidents.js';
 import { ROUTES } from './data/routes.js';
 import {
   computeRiskScore,
@@ -37,6 +39,11 @@ function formatTime(date) {
 
 export default function App() {
   const [selectedId, setSelectedId]   = useState(ROUTES[0].id);
+  const handleSelectRoute = useCallback((id) => {
+    setSelectedId(id);
+    const route = ROUTES.find((r) => r.id === id);
+    track('select_route', { route_id: id, route_name: route?.name ?? id });
+  }, []);
   const [routeData,  setRouteData]    = useState(() =>
     ROUTES.map((r) => ({
       ...r,
@@ -47,6 +54,19 @@ export default function App() {
   const [lastUpdated, setLastUpdated] = useState('Just now');
   const [demoMode,    setDemoMode]    = useState(false);
   const tickRef = useRef(null);
+
+  // ── Firebase: merge live Firestore incidents over static data ───────────────
+  const { incidentMap } = useFirestoreIncidents();
+  useEffect(() => {
+    if (!incidentMap || Object.keys(incidentMap).length === 0) return;
+    setRouteData((prev) =>
+      prev.map((r) =>
+        incidentMap[r.id]
+          ? { ...r, incidents: incidentMap[r.id] }
+          : r
+      )
+    );
+  }, [incidentMap]);
 
   // ── Derived values ──────────────────────────────────────────────────────────
   const currentRoute     = routeData.find((r) => r.id === selectedId);
@@ -168,7 +188,7 @@ export default function App() {
         <RouteSelector
           routes={routeData}
           selectedId={selectedId}
-          onSelect={setSelectedId}
+          onSelect={handleSelectRoute}
         />
 
         {/* Live map */}
@@ -176,7 +196,7 @@ export default function App() {
           routes={routeData}
           selectedId={selectedId}
           severityMap={severityMap}
-          onSelect={setSelectedId}
+          onSelect={handleSelectRoute}
         />
 
         {/* Gauge + metrics row */}
@@ -239,7 +259,7 @@ export default function App() {
               return (
                 <button
                   key={route.id}
-                  onClick={() => setSelectedId(route.id)}
+                  onClick={() => handleSelectRoute(route.id)}
                   className={[
                     'text-left p-3 rounded-lg bg-gray-900 border transition-colors hover:bg-gray-800',
                     SEVERITY_BORDER[sev],
