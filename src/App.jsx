@@ -138,6 +138,14 @@ export default function App() {
   // ── Layout ───────────────────────────────────────────────────────────────────
   return (
     <div className="min-h-screen text-white" style={{ position: 'relative' }}>
+      {/* Skip to main content — visible on focus for keyboard users */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:px-4 focus:py-2 focus:bg-blue-600 focus:text-white focus:rounded-lg focus:text-sm"
+      >
+        Skip to main content
+      </a>
+
       {/* Animated dot field background */}
       <div style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none' }}>
         <DotField
@@ -152,7 +160,7 @@ export default function App() {
           glowColor="#030712"
         />
       </div>
-      <div className="max-w-2xl mx-auto px-4 py-6 space-y-5" style={{ position: 'relative', zIndex: 1 }}>
+      <main id="main-content" className="max-w-2xl mx-auto px-4 py-6 space-y-5" style={{ position: 'relative', zIndex: 1 }}>
 
         {/* Header */}
         <header className="flex items-start justify-between">
@@ -164,8 +172,10 @@ export default function App() {
             {/* Demo mode toggle */}
             <button
               onClick={() => setDemoMode((d) => !d)}
+              aria-pressed={demoMode}
+              aria-label={demoMode ? 'Demo mode on — disable fast simulation' : 'Enable demo mode for fast simulation'}
               className={[
-                'px-3 py-1 text-xs font-semibold rounded-full border transition-colors',
+                'px-3 py-1 text-xs font-semibold rounded-full border transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-400',
                 demoMode
                   ? 'bg-orange-500/20 border-orange-500/60 text-orange-400'
                   : 'bg-gray-800 border-gray-700 text-gray-500 hover:text-gray-300 hover:border-gray-500',
@@ -174,8 +184,8 @@ export default function App() {
               {demoMode ? '⚡ Demo ON' : 'Demo mode'}
             </button>
             {/* Live dot */}
-            <div className="flex items-center gap-1.5">
-              <span className="relative flex h-2 w-2">
+            <div className="flex items-center gap-1.5" aria-label="Data is live" role="status">
+              <span className="relative flex h-2 w-2" aria-hidden="true">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
               </span>
@@ -308,6 +318,16 @@ export default function App() {
           </button>
         </div>
 
+      </main>
+
+      {/* Screen-reader announcement for score changes */}
+      <div
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+        className="sr-only"
+      >
+        {`${currentRoute.name}: ${label}, risk score ${Math.round(score)} out of 100`}
       </div>
     </div>
   );

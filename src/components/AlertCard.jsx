@@ -18,6 +18,9 @@ export default function AlertCard({ alert, severity }) {
 
   return (
     <div
+      role="status"
+      aria-live="polite"
+      aria-atomic="true"
       className={[
         'border-l-4 bg-gray-800 rounded-r-lg px-4 py-3 transition-all duration-300',
         borderColor,
