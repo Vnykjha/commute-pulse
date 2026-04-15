@@ -2,6 +2,8 @@ export const ROUTES = [
   {
     id: "route_1",
     name: "Andheri → BKC",
+    gmaps_origin: "Andheri East Station,Mumbai",
+    gmaps_destination: "Bandra Kurla Complex,Mumbai",
     // [lng, lat] — Mapbox convention
     coordinates: [
       [72.8562, 19.1197], // Andheri East, SV Road
@@ -63,6 +65,8 @@ export const ROUTES = [
   {
     id: "route_2",
     name: "Borivali → Churchgate",
+    gmaps_origin: "Borivali Station,Mumbai",
+    gmaps_destination: "Churchgate Station,Mumbai",
     coordinates: [
       [72.8562, 19.2307], // Borivali Station
       [72.8553, 19.1652], // WEH Borivali entry
@@ -141,6 +145,8 @@ export const ROUTES = [
   {
     id: "route_3",
     name: "Thane → Powai",
+    gmaps_origin: "Thane Station,Mumbai",
+    gmaps_destination: "Powai Lake,Mumbai",
     coordinates: [
       [72.9781, 19.1820], // Thane Station
       [72.9615, 19.2109], // Ghodbunder Road entry

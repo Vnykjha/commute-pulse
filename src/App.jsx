@@ -253,6 +253,18 @@ export default function App() {
           >
             Simulate update
           </button>
+          <a
+            href={`https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(currentRoute.gmaps_origin)}&destination=${encodeURIComponent(currentRoute.gmaps_destination)}&travelmode=driving`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-4 py-2 text-sm font-medium bg-white/10 hover:bg-white/20 text-white rounded-lg transition-colors flex items-center gap-2"
+          >
+            <svg width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M24 4C15.163 4 8 11.163 8 20c0 11.836 14.337 23.197 15.01 23.73a1.5 1.5 0 001.98 0C25.663 43.197 40 31.836 40 20c0-8.837-7.163-16-16-16z" fill="#EA4335"/>
+              <circle cx="24" cy="20" r="6" fill="white"/>
+            </svg>
+            Open in Google Maps
+          </a>
           <button
             onClick={handleScoringInfo}
             className="px-4 py-2 text-sm font-medium border border-gray-700 text-gray-400 hover:text-gray-200 hover:border-gray-500 rounded-lg transition-colors"
