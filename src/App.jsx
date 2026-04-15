@@ -8,6 +8,7 @@ import {
 } from './logic/scorer.js';
 import AlertCard from './components/AlertCard';
 import CountdownBar from './components/CountdownBar';
+import DotField from './components/DotField';
 import RiskGauge from './components/RiskGauge';
 import RouteMap from './components/RouteMap';
 import RouteSelector from './components/RouteSelector';
@@ -116,8 +117,22 @@ export default function App() {
 
   // ── Layout ───────────────────────────────────────────────────────────────────
   return (
-    <div className="min-h-screen bg-gray-950 text-white">
-      <div className="max-w-2xl mx-auto px-4 py-6 space-y-5">
+    <div className="min-h-screen bg-gray-950 text-white" style={{ position: 'relative' }}>
+      {/* Animated dot field background */}
+      <div style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none' }}>
+        <DotField
+          dotRadius={1.5}
+          dotSpacing={22}
+          bulgeStrength={60}
+          glowRadius={180}
+          sparkle={false}
+          waveAmplitude={0}
+          gradientFrom="rgba(99, 153, 34, 0.2)"
+          gradientTo="rgba(226, 75, 74, 0.12)"
+          glowColor="#030712"
+        />
+      </div>
+      <div className="max-w-2xl mx-auto px-4 py-6 space-y-5" style={{ position: 'relative', zIndex: 1 }}>
 
         {/* Header */}
         <header className="flex items-start justify-between">
