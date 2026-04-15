@@ -9,6 +9,7 @@ import {
 import AlertCard from './components/AlertCard';
 import CountdownBar from './components/CountdownBar';
 import RiskGauge from './components/RiskGauge';
+import RouteMap from './components/RouteMap';
 import RouteSelector from './components/RouteSelector';
 
 const SEVERITY_CHIP = {
@@ -58,6 +59,11 @@ export default function App() {
 
   // Other routes for comparison strip
   const otherRoutes = routeData.filter((r) => r.id !== selectedId);
+
+  // Severity map for the live map (all routes need a color)
+  const severityMap = Object.fromEntries(
+    routeData.map((r) => [r.id, getRiskLabel(computeRiskScore(r)).severity])
+  );
 
   // ── Simulation ───────────────────────────────────────────────────────────────
   const simulateTick = useCallback(() => {
@@ -147,6 +153,14 @@ export default function App() {
         <RouteSelector
           routes={routeData}
           selectedId={selectedId}
+          onSelect={setSelectedId}
+        />
+
+        {/* Live map */}
+        <RouteMap
+          routes={routeData}
+          selectedId={selectedId}
+          severityMap={severityMap}
           onSelect={setSelectedId}
         />
 
